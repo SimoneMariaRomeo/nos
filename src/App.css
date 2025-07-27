@@ -13,17 +13,38 @@ html,
     Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   background: #f5f7fa;
   min-height: 100vh;
+  /* Remove flex/center here; centering handled in welcome-container */
+}
+
+/* ===============================
+   WelcomeStep Centering & Card
+   =============================== */
+.welcome-container {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
+  min-height: 100vh;          /* full viewport height */
+  background: #f5f8fc;        /* soft gray background */
 }
+
+.welcome-card {
+  background: #fff;
+  padding: 2.5rem 3.25rem;
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+/* ===============================
+   Shared and Button Styles
+   =============================== */
 
 .container {
   background: #fff;
   width: 100%;
   max-width: 420px;
   padding: 2rem 1.5rem;
-  margin: 2rem;
+  margin: 2rem auto;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
@@ -101,11 +122,84 @@ button:not(:disabled):hover {
   margin-bottom: 1rem;
 }
 
+/* Button row for WelcomeStep (playful, gap, no stretching) */
 .buttons {
   display: flex;
   gap: 1rem;
+  justify-content: center;
+  margin-top: 1.25rem;
 }
 
 .buttons button {
-  flex: 1;
+  flex: unset;
+  padding: 0.75rem 1.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: transform 0.1s ease;
+}
+
+.buttons button:active {
+  transform: scale(0.96);
+}
+
+/* Specific colors for Yes/No buttons in WelcomeStep */
+button.yes {
+  background: #2f80ed;
+  color: #fff;
+  transition: background-color 0.2s ease;
+}
+
+button.yes:hover {
+  background: #22c55e; /* green on hover */
+}
+
+button.no {
+  background: #e0e0e0;
+  color: #333;
+  transition: background-color 0.2s ease;
+}
+
+button.no:hover {
+  background: #ef4444; /* red on hover */
+}
+
+/* Button text layout for WelcomeStep */
+.button-text {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+}
+
+.button-emoji {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+/* Genie image styles */
+.genie-section {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.genie-image {
+  max-width: 300px;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.genie-image:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.genie-instruction {
+  margin-bottom: 1rem;
+  color: #666;
+  font-style: italic;
+  font-size: 0.9rem;
 }
