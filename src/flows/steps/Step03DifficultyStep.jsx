@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import StarRating from '../../components/StarRating';
 import StepIndicator from '../../components/StepIndicator';
 
-function DifficultyStep({ data, onNext, step, total }) {
+function Step03DifficultyStep({ data, onNext, step, total }) {
   const [difficulty, setDifficulty] = useState(data.difficulty || 0);
 
   return (
     <>
       <StepIndicator current={step} total={total} />
       <StarRating
-        label="How difficult is your goal?"
+        label="How difficult do you think this goal is?"
         value={difficulty}
         onChange={setDifficulty}
       />
@@ -18,4 +18,4 @@ function DifficultyStep({ data, onNext, step, total }) {
   );
 }
 
-export default DifficultyStep; 
+export default Step03DifficultyStep; 

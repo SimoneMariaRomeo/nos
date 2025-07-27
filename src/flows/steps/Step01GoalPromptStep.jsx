@@ -1,6 +1,6 @@
 import React from 'react';
 
-function GoalPromptStep({ onNext }) {
+function Step01GoalPromptStep({ onNext }) {
   const handleYes = () => {
     onNext({ hasGoal: 'yes' });
   };
@@ -30,4 +30,4 @@ function GoalPromptStep({ onNext }) {
   );
 }
 
-export default GoalPromptStep; 
+export default Step01GoalPromptStep; 

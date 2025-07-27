@@ -1,6 +1,6 @@
 import React from 'react';
 
-function WelcomeStep({ onNext }) {
+function Step00WelcomeStep({ onNext }) {
   const handleYes = () => {
     // move on immediately since confetti is handled at App level
     onNext({ ready: 'yes' });
@@ -12,9 +12,9 @@ function WelcomeStep({ onNext }) {
     <div className="welcome-container">
       <div className="welcome-card">
         <h2>Welcome!</h2>
-                <p>This is your magical genie🧞‍♂️app, ready to empower you achieve your goals!<br /><br />
+        <p>This is your magical genie🧞‍♂️app, ready to empower you achieve your goals!<br /><br />
            Do you have a goal in mind?
-         </p>
+        </p>
         <p>
            
         </p>
@@ -34,4 +34,4 @@ function WelcomeStep({ onNext }) {
   );
 }
 
-export default WelcomeStep;
+export default Step00WelcomeStep; 

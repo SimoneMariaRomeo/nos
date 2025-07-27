@@ -203,3 +203,85 @@ button.no:hover {
   font-style: italic;
   font-size: 0.9rem;
 }
+
+/* KPI highlight styles */
+.kpi-highlight {
+  text-decoration: underline;
+  cursor: pointer;
+  color: #3b82f6;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.kpi-highlight:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+.kpi-explanation {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #374151;
+}
+
+.kpi-explanation p {
+  margin: 0 0 0.75rem 0;
+}
+
+.kpi-explanation p:last-child {
+  margin-bottom: 0;
+}
+
+.weekly-days {
+  margin: 1rem 0;
+}
+.weekly-days span {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+.weekday {
+  margin-right: 0.75rem;
+  user-select: none;
+}
+.weekday input {
+  margin-right: 0.25rem;
+}
+.kpi-recap {
+  background: #ecfdf5;
+  border: 1px solid #34d399;
+  color: #065f46;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+  font-weight: 600;
+}
+
+.instruction-text {
+  color: #6b7280;
+  font-style: italic;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.genie-recap {
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  color: #92400e;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+  font-weight: 600;
+}
+
+.genie-recap.confirmed {
+  background: #ecfdf5;
+  border: 1px solid #34d399;
+  color: #065f46;
+}

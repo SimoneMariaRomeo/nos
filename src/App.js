@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
 import './App.css';
-import WelcomeStep from './flows/steps/WelcomeStep';
-import GoalPromptStep from './flows/steps/GoalPromptStep';
+import Step00WelcomeStep from './flows/steps/Step00WelcomeStep';
+import Step01GoalPromptStep from './flows/steps/Step01GoalPromptStep';
+import Step02GoalDescriptionStep from './flows/steps/Step02GoalDescriptionStep';
+import Step03DifficultyStep from './flows/steps/Step03DifficultyStep';
+import Step04MotivationStep from './flows/steps/Step04MotivationStep';
+import Step05KPIInputStep from './flows/steps/Step05KPIInputStep';
+import Step06GenieQuestionStep from './flows/steps/Step06GenieQuestionStep';
+import Step07HowItWorksStep from './flows/steps/Step07HowItWorksStep';
+import Step08FinalSuccessStep from './flows/steps/Step08FinalSuccessStep';
 import Confetti from 'react-confetti';
 import { useWindowSize } from 'react-use';
 
@@ -40,10 +47,14 @@ function App() {
   const [goal, setGoal] = useState('');
   const [kpi, setKpi] = useState('');
   const [kpiFrequency, setKpiFrequency] = useState('daily');
+  const [dailyTime, setDailyTime] = useState('');
+  const [weeklyDays, setWeeklyDays] = useState([]); // array of strings
+  const [monthlyCount, setMonthlyCount] = useState('');
   const [refuseAmount, setRefuseAmount] = useState('');
   
   // Confetti state (lifted from WelcomeStep)
   const [celebrate, setCelebrate] = useState(false);
+  const [showMotivationExit, setShowMotivationExit] = useState(false);
   const { width, height } = useWindowSize();
 
   // Total number of steps in the "happy path" flow (when user is ready & motivated)
@@ -60,7 +71,12 @@ function App() {
     setGoal('');
     setKpi('');
     setKpiFrequency('daily');
+    setDailyTime('');
+    setWeeklyDays([]);
+    setMonthlyCount('');
     setRefuseAmount('');
+    setShowMotivationExit(false);
+    setCelebrate(false);
   };
 
   // Early exits / alternative screens
@@ -84,35 +100,36 @@ function App() {
     );
   }
 
-  if (step === 3 && motivation > 0 && motivation < difficulty) {
+  if (showMotivationExit) {
     return (
       <main className="container">
-        <h2>Let\'s build up some motivation first! 💪</h2>
-        <p>Your motivation seems lower than the difficulty you chose. Come back when you feel more motivated – you\'ve got this!</p>
+        <h2>Let's build up some motivation first! 💪</h2>
+        <p>Your motivation seems lower than the difficulty you chose. Come back when you feel more motivated – you've got this!</p>
         <button onClick={reset}>Restart</button>
       </main>
     );
   }
 
+
+
   // Render step content
   let content;
   switch (step) {
     case 0: // Welcome
-      return (
-        <WelcomeStep 
+      content = (
+        <Step00WelcomeStep 
           onNext={(data) => {
             setReady(data.ready);
             if (data.ready === 'yes') {
-              setCelebrate(true); // Trigger confetti at App level
-              // Wait 0.5 seconds before changing screen
-              setTimeout(() => next(), 500);
+              next();
             }
           }}
         />
       );
+      break;
     case 1: // Goal prompt
-      return (
-        <GoalPromptStep 
+      content = (
+        <Step01GoalPromptStep 
           onNext={(data) => {
             setHasGoal(data.hasGoal);
             if (data.hasGoal === 'yes') {
@@ -123,112 +140,97 @@ function App() {
           }}
         />
       );
-    case 2: // Difficulty
+      break;
+    case 2: // Goal description
       content = (
-        <>
-          <StepIndicator current={2} total={totalSteps} />
-          <StarRating
-            label="How difficult is your goal?"
-            value={difficulty}
-            onChange={(val) => setDifficulty(val)}
-          />
-          <button disabled={!difficulty} onClick={next}>Next</button>
-        </>
+        <Step02GoalDescriptionStep 
+          data={{ goal }}
+          onNext={(data) => {
+            setGoal(data.goal);
+            next();
+          }}
+          step={2}
+          total={totalSteps}
+        />
       );
       break;
-    case 3: // Motivation
+    case 3: // Difficulty
       content = (
-        <>
-          <StepIndicator current={3} total={totalSteps} />
-          <StarRating
-            label="How motivated / how important is this goal to you?"
-            value={motivation}
-            onChange={(val) => setMotivation(val)}
-          />
-          <button disabled={!motivation} onClick={next}>Next</button>
-        </>
+        <Step03DifficultyStep 
+          data={{ difficulty }}
+          onNext={(data) => {
+            setDifficulty(data.difficulty);
+            next();
+          }}
+          step={3}
+          total={totalSteps}
+        />
       );
       break;
-    case 4: // Goal prompt
+    case 4: // Motivation
       content = (
-        <>
-          <StepIndicator current={4} total={totalSteps} />
-          <label>
-            Describe your goal in one line:
-            <input
-              type="text"
-              value={goal}
-              onChange={(e) => setGoal(e.target.value)}
-              placeholder="E.g., Run a half-marathon"
-            />
-          </label>
-          <button disabled={goal.trim() === ''} onClick={next}>Next</button>
-        </>
+        <Step04MotivationStep 
+          data={{ motivation }}
+          onNext={(data) => {
+            setMotivation(data.motivation);
+            // Check if motivation is lower than difficulty
+            if (data.motivation > 0 && data.motivation < difficulty) {
+              setShowMotivationExit(true);
+            } else {
+              next();
+            }
+          }}
+          step={4}
+          total={totalSteps}
+        />
       );
       break;
-    case 5: // KPI prompt
+    case 5: // KPI input
       content = (
-        <>
-          <StepIndicator current={5} total={totalSteps} />
-          <label>
-            What recurring KPI will you track?
-            <input
-              type="text"
-              value={kpi}
-              onChange={(e) => setKpi(e.target.value)}
-              placeholder="E.g., Miles run"
-            />
-          </label>
-          <label>
-            Frequency:
-            <select value={kpiFrequency} onChange={(e) => setKpiFrequency(e.target.value)}>
-              <option value="daily">Daily</option>
-              <option value="weekly">Weekly</option>
-            </select>
-          </label>
-          <button disabled={kpi.trim() === ''} onClick={next}>Next</button>
-        </>
+        <Step05KPIInputStep 
+          data={{ kpi, kpiFrequency }}
+          onNext={(data) => {
+            setKpi(data.kpi);
+            setKpiFrequency(data.kpiFrequency);
+            setDailyTime(data.dailyTime || '');
+            setWeeklyDays(data.weeklyDays || []);
+            setMonthlyCount(data.monthlyCount || '');
+            next();
+          }}
+          step={5}
+          total={totalSteps}
+        />
       );
       break;
     case 6: // Genie question
       content = (
-        <>
-          <StepIndicator current={6} total={totalSteps} />
-          <label>
-            If a genie could grant your goal or give you money, what\'s the highest amount you\'d refuse? (USD)
-            <input
-              type="number"
-              min="0"
-              value={refuseAmount}
-              onChange={(e) => setRefuseAmount(e.target.value)}
-            />
-          </label>
-          <button disabled={refuseAmount === ''} onClick={next}>Next</button>
-        </>
+        <Step06GenieQuestionStep 
+          data={{ refuseAmount, kpi, kpiFrequency, dailyTime, weeklyDays, monthlyCount }}
+          onNext={(data) => {
+            setRefuseAmount(data.refuseAmount);
+            next();
+          }}
+          step={6}
+          total={totalSteps}
+        />
       );
       break;
-    case 7: // Rules
+    case 7: // How it works
       content = (
-        <>
-          <StepIndicator current={7} total={totalSteps} />
-          <h3>How it works</h3>
-          <ul>
-            <li>You\'ll check in {kpiFrequency} and mark your KPI "{kpi}".</li>
-            <li>If you miss a check-in, you LOSE ${refuseAmount}.</li>
-            <li>Stay consistent to keep your money and reach your goal!</li>
-          </ul>
-          <button onClick={next}>Sounds good</button>
-        </>
+        <Step07HowItWorksStep 
+          data={{ kpiFrequency, kpi, refuseAmount }}
+          onNext={() => next()}
+          step={7}
+          total={totalSteps}
+        />
       );
       break;
-    case 8: // Connect card / final
+    case 8: // Final success
       content = (
-        <>
-          <h2>🎉 You\'re all set!</h2>
-          <p>We believe in you! Good luck on achieving your goal: "{goal}"</p>
-          <p>(Payment integration coming soon. For now, just keep crushing it!)</p>
-          <button onClick={reset}>Start Over</button>
-        </>
+        <Step08FinalSuccessStep 
+          data={{ goal }}
+          onNext={reset}
+        />
       );
       break;
     default:
@@ -254,9 +256,7 @@ function App() {
         />
       )}
       
-      <main className="container">
-        {content}
-      </main>
+      {content}
     </>
   );
 }
