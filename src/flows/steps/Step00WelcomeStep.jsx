@@ -1,32 +1,32 @@
 import React from 'react';
 
 function Step00WelcomeStep({ onNext }) {
-  const handleYes = () => {
-    // move on immediately since confetti is handled at App level
-    onNext({ ready: 'yes' });
-  };
-
+  const handleYes = () => onNext({ ready: 'yes' });
   const handleNo = () => onNext({ ready: 'no' });
 
   return (
     <div className="welcome-container">
       <div className="welcome-card">
-        <h2>Welcome!</h2>
-        <p>This is your magical genie🧞‍♂️app, ready to empower you achieve your goals!<br /><br />
-           Do you have a goal in mind?
-        </p>
-        <p>
-           
-        </p>
+        {/* Large, primary-coloured title */}
+        <h1 className="title-xl">Welcome!</h1>
 
+        {/* Subtitle / body text */}
+        <div className="subtitle-lg">
+          This is your magical genie&nbsp;🧞‍♂️&nbsp;app,
+          ready to empower you to achieve your goals!
+          <br /><br />
+          <strong>Do you have a goal in mind?</strong>
+        </div>
+
+        {/* YES / NO buttons */}
         <div className="buttons">
-          <button className="yes" onClick={handleYes}>
-            <div className="button-text">YES</div>
-            <div className="button-emoji">💪</div>
+          <button className="cta-btn yes" onClick={handleYes}>
+            <span>YES</span>
+            <span style={{ fontSize: '2rem', display: 'block' }}>💪</span>
           </button>
-          <button className="no" onClick={handleNo}>
-            <div className="button-text">NO</div>
-            <div className="button-emoji">😔</div>
+          <button className="cta-btn no" onClick={handleNo}>
+            <span>NO</span>
+            <span style={{ fontSize: '2rem', display: 'block' }}>😔</span>
           </button>
         </div>
       </div>
@@ -34,4 +34,4 @@ function Step00WelcomeStep({ onNext }) {
   );
 }
 
-export default Step00WelcomeStep; 
+export default Step00WelcomeStep;

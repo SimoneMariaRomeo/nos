@@ -42,33 +42,107 @@ function Step06GenieQuestionStep({ data, onNext, step, total }) {
   };
 
   return (
-    <>
-      <StepIndicator current={step} total={total} />
-      <label>
-        If a genie could grant your goal or give you money, what's the highest amount you'd refuse? (€)
-        <br />
-        <span className="instruction-text">Pick an amount, be ambitious</span>
-        <select
-          value={refuseAmount}
-          onChange={(e) => setRefuseAmount(e.target.value)}
+    <div
+      className="welcome-container"
+      style={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: '#faf8ff'
+      }}
+    >
+      <div
+        className="welcome-card"
+        style={{
+          width: '100%',
+          maxWidth: 520,
+          background: '#fff',
+          borderRadius: '2rem',
+          boxShadow: '0 4px 24px #b47bff22',
+          padding: '2.5rem 2rem',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center'
+        }}
+      >
+        <StepIndicator current={step} total={total} />
+
+        <h1 className="title-xl" style={{ fontSize: '2rem', marginBottom: '1.2rem' }}>
+          What would you risk for your dream?
+        </h1>
+
+        <div className="subtitle-lg" style={{ marginBottom: '1.5rem', fontWeight: 500, fontSize: '1.09rem' }}>
+          If a genie could grant your goal or give you money,<br />
+          what's the <strong>biggest amount you'd refuse?</strong>
+        </div>
+
+        <label
+          style={{
+            fontWeight: 600,
+            color: '#462275',
+            width: '100%',
+            maxWidth: 340,
+            marginBottom: '1.1rem'
+          }}
         >
-          <option value="">Select an amount...</option>
-          {moneyOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      </label>
+          <span style={{ fontSize: '1.06rem', display: 'block', marginBottom: '0.4rem' }}>
+            Choose your “no pain, no gain” number:
+          </span>
+          <select
+            value={refuseAmount}
+            onChange={(e) => setRefuseAmount(e.target.value)}
+            style={{
+              width: '100%',
+              padding: '0.8rem',
+              fontSize: '1.1rem',
+              borderRadius: '1rem',
+              border: '1.2px solid #bdbdbd',
+              marginBottom: '1.3rem'
+            }}
+          >
+            <option value="">Select an amount...</option>
+            {moneyOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </label>
 
-      {/* Recap box */}
-      {(
-        <div className={`genie-recap ${refuseAmount ? 'confirmed' : ''}`}>{getRecap()}</div>
-      )}
+        {/* Recap box */}
+        <div
+          className={`genie-recap ${refuseAmount ? 'confirmed' : ''}`}
+          style={{
+            background: '#f3f0fd',
+            color: '#1976d2',
+            padding: '0.7rem 1.2rem',
+            borderRadius: '0.8rem',
+            fontWeight: 600,
+            fontSize: '1.1rem',
+            margin: '1.1rem 0 2rem 0',
+            minHeight: 32,
+            textAlign: 'center',
+            opacity: refuseAmount ? 1 : 0.55
+          }}
+        >
+          {getRecap()}
+        </div>
 
-      <button disabled={refuseAmount === ''} onClick={() => onNext({ refuseAmount })}>Confirm</button>
-    </>
+        <button
+          className="cta-btn"
+          disabled={refuseAmount === ''}
+          style={{
+            opacity: refuseAmount === '' ? 0.5 : 1,
+            cursor: refuseAmount === '' ? 'not-allowed' : 'pointer'
+          }}
+          onClick={() => onNext({ refuseAmount })}
+        >
+          Confirm
+        </button>
+      </div>
+    </div>
   );
 }
 
-export default Step06GenieQuestionStep; 
+export default Step06GenieQuestionStep;

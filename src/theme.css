@@ -1,0 +1,41 @@
+/* src/theme.css (import once in App.js) */
+:root {
+    --primary: #462275;
+    --cta-bg: #1976d2;
+    --cta-bg-hover: #2e7d32;
+  }
+  
+  .title-xl {
+    font-size: 3.2rem;
+    font-weight: 900;
+    color: var(--primary);
+    letter-spacing: -0.04em;
+    text-align: center;
+  }
+  
+  .subtitle-lg {
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--primary);
+    text-align: center;
+  }
+  
+  .cta-btn {
+    margin: 1.6rem 0 2.2rem;
+    padding: 1.1rem 3.2rem;
+    font-size: 2rem;
+    font-weight: 700;
+    border-radius: 2rem;
+    background: var(--cta-bg);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 24px #b47bff22;
+    letter-spacing: 0.06em;
+    transition: background 0.25s;
+  }
+  
+  .cta-btn:hover {
+    background: var(--cta-bg-hover);
+  }
+  

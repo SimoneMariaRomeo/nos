@@ -51,8 +51,6 @@ function App() {
   const [weeklyDays, setWeeklyDays] = useState([]); // array of strings
   const [monthlyCount, setMonthlyCount] = useState('');
   const [refuseAmount, setRefuseAmount] = useState('');
-  
-  // Confetti state (lifted from WelcomeStep)
   const [celebrate, setCelebrate] = useState(false);
   const [showMotivationExit, setShowMotivationExit] = useState(false);
   const { width, height } = useWindowSize();
@@ -82,42 +80,48 @@ function App() {
   // Early exits / alternative screens
   if (ready === 'no') {
     return (
-      <main className="container">
-        <h2>It's okay to take a break! 💤</h2>
-        <p>Come back whenever have a goal in mind. We'll be here cheering for you!</p>
-        <button onClick={reset}>Restart</button>
+      <main className="container" style={{ textAlign: 'center', paddingTop: '20vh' }}>
+        <h1 className="title-xl" style={{ fontSize: '2.3rem' }}>It's okay to take a break! 💤</h1>
+        <div className="subtitle-lg" style={{ marginBottom: '2rem', fontSize: '1.25rem' }}>
+          Come back whenever you have a goal in mind.<br />We'll be here cheering for you!
+        </div>
+        <button className="cta-btn" onClick={reset}>Restart</button>
       </main>
     );
   }
 
   if (hasGoal === 'no') {
     return (
-      <main className="container">
-        <h2>Take your time! 🤔</h2>
-        <p>It\'s important to have a clear goal in mind before we start. Come back when you have something specific you want to achieve!</p>
-        <button onClick={reset}>Restart</button>
+      <main className="container" style={{ textAlign: 'center', paddingTop: '20vh' }}>
+        <h1 className="title-xl" style={{ fontSize: '2.2rem' }}>Take your time! 🤔</h1>
+        <div className="subtitle-lg" style={{ marginBottom: '2rem', fontSize: '1.2rem' }}>
+          It's important to have a clear goal in mind before we start.<br />
+          Come back when you have something specific you want to achieve!
+        </div>
+        <button className="cta-btn" onClick={reset}>Restart</button>
       </main>
     );
   }
 
   if (showMotivationExit) {
     return (
-      <main className="container">
-        <h2>Let's build up some motivation first! 💪</h2>
-        <p>Your motivation seems lower than the difficulty you chose. Come back when you feel more motivated – you've got this!</p>
-        <button onClick={reset}>Restart</button>
+      <main className="container" style={{ textAlign: 'center', paddingTop: '20vh' }}>
+        <h1 className="title-xl" style={{ fontSize: '2.1rem' }}>Let's build up some motivation first! 💪</h1>
+        <div className="subtitle-lg" style={{ marginBottom: '2rem', fontSize: '1.14rem' }}>
+          Your motivation seems lower than the difficulty you chose.<br />
+          Come back when you feel more motivated – you’ve got this!
+        </div>
+        <button className="cta-btn" onClick={reset}>Restart</button>
       </main>
     );
   }
-
-
 
   // Render step content
   let content;
   switch (step) {
     case 0: // Welcome
       content = (
-        <Step00WelcomeStep 
+        <Step00WelcomeStep
           onNext={(data) => {
             setReady(data.ready);
             if (data.ready === 'yes') {
@@ -129,12 +133,11 @@ function App() {
       break;
     case 1: // Goal prompt
       content = (
-        <Step01GoalPromptStep 
+        <Step01GoalPromptStep
           onNext={(data) => {
             setHasGoal(data.hasGoal);
             if (data.hasGoal === 'yes') {
               setCelebrate(true); // Trigger confetti at App level
-              // Wait 0.5 seconds before changing screen
               setTimeout(() => next(), 500);
             }
           }}
@@ -143,7 +146,7 @@ function App() {
       break;
     case 2: // Goal description
       content = (
-        <Step02GoalDescriptionStep 
+        <Step02GoalDescriptionStep
           data={{ goal }}
           onNext={(data) => {
             setGoal(data.goal);
@@ -156,7 +159,7 @@ function App() {
       break;
     case 3: // Difficulty
       content = (
-        <Step03DifficultyStep 
+        <Step03DifficultyStep
           data={{ difficulty }}
           onNext={(data) => {
             setDifficulty(data.difficulty);
@@ -169,7 +172,7 @@ function App() {
       break;
     case 4: // Motivation
       content = (
-        <Step04MotivationStep 
+        <Step04MotivationStep
           data={{ motivation }}
           onNext={(data) => {
             setMotivation(data.motivation);
@@ -187,8 +190,8 @@ function App() {
       break;
     case 5: // KPI input
       content = (
-        <Step05KPIInputStep 
-          data={{ kpi, kpiFrequency }}
+        <Step05KPIInputStep
+          data={{ kpi, kpiFrequency, dailyTime, weeklyDays, monthlyCount }}
           onNext={(data) => {
             setKpi(data.kpi);
             setKpiFrequency(data.kpiFrequency);
@@ -204,7 +207,7 @@ function App() {
       break;
     case 6: // Genie question
       content = (
-        <Step06GenieQuestionStep 
+        <Step06GenieQuestionStep
           data={{ refuseAmount, kpi, kpiFrequency, dailyTime, weeklyDays, monthlyCount }}
           onNext={(data) => {
             setRefuseAmount(data.refuseAmount);
@@ -217,8 +220,8 @@ function App() {
       break;
     case 7: // How it works
       content = (
-        <Step07HowItWorksStep 
-          data={{ kpiFrequency, kpi, refuseAmount }}
+        <Step07HowItWorksStep
+          data={{ kpiFrequency, kpi, refuseAmount, goal }}
           onNext={() => next()}
           step={7}
           total={totalSteps}
@@ -227,7 +230,7 @@ function App() {
       break;
     case 8: // Final success
       content = (
-        <Step08FinalSuccessStep 
+        <Step08FinalSuccessStep
           data={{ goal }}
           onNext={reset}
         />
@@ -239,14 +242,13 @@ function App() {
 
   return (
     <>
-      {/* Confetti layer (rendered at App level so it persists across steps) */}
+      {/* Confetti layer */}
       {celebrate && (
         <Confetti
           width={width}
           height={height}
           numberOfPieces={250}
           recycle={false}
-          // use various celebration emojis
           drawShape={(ctx) => {
             const emojis = ['🎉', '🎊', '🎈', '🎆', '🎇', '✨', '💪', '🔥', '⭐', '🏆'];
             const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
@@ -255,7 +257,6 @@ function App() {
           }}
         />
       )}
-      
       {content}
     </>
   );
